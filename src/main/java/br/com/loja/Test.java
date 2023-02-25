@@ -12,11 +12,13 @@ import br.com.loja.domain.model.Categoria;
 import br.com.loja.domain.model.Cliente;
 import br.com.loja.domain.model.Endereco;
 import br.com.loja.domain.model.ItemVenda;
+import br.com.loja.domain.model.MovimentacaoEstoque;
 import br.com.loja.domain.model.Produto;
 import br.com.loja.domain.model.Venda;
 import br.com.loja.domain.model.enums.UF;
 import br.com.loja.domain.service.CategoriaService;
 import br.com.loja.domain.service.ClienteService;
+import br.com.loja.domain.service.MovimentacaoEstoqueService;
 import br.com.loja.domain.service.ProdutoService;
 import br.com.loja.domain.service.VendaService;
 
@@ -35,12 +37,15 @@ public class Test implements CommandLineRunner {
 	
 	@Autowired
 	private VendaService vendaService;
+	
+	@Autowired
+	private MovimentacaoEstoqueService estoqueService;
 
 	@Override
 	public void run(String... args) throws Exception {
 		this.createCliente();
-		//this.notFoundCliente();
 		this.createCategoriaProduto();
+		this.createMovimentacao();
 		this.createVenda();
 	}
 	
@@ -57,12 +62,6 @@ public class Test implements CommandLineRunner {
 		e1.setUf(UF.SP);
 		c1.setEndereco(e1);	
 		clienteService.create(c1);
-		
-		//testar delete
-	}
-	
-	public void notFoundCliente() {
-		clienteService.findById(999L);
 	}
 	
 	public void createCategoriaProduto() {
@@ -94,6 +93,21 @@ public class Test implements CommandLineRunner {
 		p2c.add(c3);
 		p2.setCategorias(p2c);
 		produtoService.create(p2);
+		
+		Produto p3 = new Produto();
+		p3.setNome("Samsung A50");
+		p3.setValor(1300D);
+		p1c.add(c1);
+		p3.setCategorias(p1c);
+		produtoService.create(p3);
+	}
+	
+	public void createMovimentacao() {
+		MovimentacaoEstoque movimentacao = new MovimentacaoEstoque();
+		movimentacao.setProduto(produtoService.findById(1L));
+		movimentacao.setTipoEntrada();
+		movimentacao.setQuantidade(10);
+		estoqueService.create(movimentacao);
 	}
 	
 	public void createVenda() {
@@ -113,6 +127,5 @@ public class Test implements CommandLineRunner {
 		v1.setItens(itens);
 		vendaService.generateNewVenda(v1);
 		vendaService.finalizeVenda(1L);
-		vendaService.cancelVenda(1L);
 	}
 }
