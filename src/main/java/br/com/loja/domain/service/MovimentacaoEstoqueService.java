@@ -7,15 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.loja.domain.exceptions.EntityNotFoundException;
+import br.com.loja.domain.exception.DomainException;
+import br.com.loja.domain.exception.EntityNotFoundException;
 import br.com.loja.domain.model.MovimentacaoEstoque;
 import br.com.loja.domain.repository.MovimentacaoEstoqueRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 
 @Service
 public class MovimentacaoEstoqueService {
 	@Autowired
 	private MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
+	
+	@Autowired
+	private EntityManager entityManager;
 	
 	public MovimentacaoEstoque findById(Long id) {
 		return movimentacaoEstoqueRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("MovimentacaoEstoque ID %s não encontrada!", id.toString())));
@@ -28,8 +33,11 @@ public class MovimentacaoEstoqueService {
 	@Transactional
 	public MovimentacaoEstoque create(@Valid MovimentacaoEstoque input) {
 		input.setDataMovimentacao(OffsetDateTime.now());
-		input = movimentacaoEstoqueRepository.save(input);
-		return this.findById(input.getId());
+		this.checkQuantidade(input);
+		
+		input = movimentacaoEstoqueRepository.saveAndFlush(input);
+		entityManager.refresh(input);
+		return input;
 	}
 	
 	@Transactional
@@ -40,14 +48,22 @@ public class MovimentacaoEstoqueService {
 		finded.setProduto(input.getProduto());
 		finded.setQuantidade(input.getQuantidade());
 		finded.setTipoMovimentacao(input.getTipoMovimentacao());
-		finded = movimentacaoEstoqueRepository.save(finded);
 		
-		return this.findById(id);
+		this.checkQuantidade(input);
+		
+		input = movimentacaoEstoqueRepository.saveAndFlush(input);
+		entityManager.refresh(input);
+		return input;
 	}
 	
 	@Transactional
 	public void deleteById(Long id) {
 		var finded = this.findById(id);
 		movimentacaoEstoqueRepository.delete(finded);
+	}
+	
+	private void checkQuantidade(MovimentacaoEstoque movimentacao) {	
+		if (movimentacao.getQuantidade() == null || movimentacao.getQuantidade() <= 0)
+			throw new DomainException("Quantidade deve ser maior que 0!");
 	}
 }

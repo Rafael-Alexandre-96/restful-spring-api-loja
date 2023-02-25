@@ -9,8 +9,10 @@ import java.util.Objects;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import br.com.loja.domain.model.contract.RegistryTimestamps;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,7 +26,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tb_produto")
-public class Produto implements Serializable {
+public class Produto implements Serializable, RegistryTimestamps {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
@@ -38,7 +40,7 @@ public class Produto implements Serializable {
 	@NotNull
 	private Double valor;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(
 		name = "tb_produto_categoria",
 		joinColumns = @JoinColumn(name = "id_produto"),
@@ -88,30 +90,41 @@ public class Produto implements Serializable {
 		this.categorias = categorias;
 	}
 
+	@Override
 	public OffsetDateTime getCreatedAt() {
 		return createdAt;
 	}
 
+	@Override
 	public void setCreatedAt(OffsetDateTime createdAt) {
 		this.createdAt = createdAt;
 	}
 
+	@Override
 	public OffsetDateTime getUpdatedAt() {
 		return updatedAt;
 	}
-
+	
+	@Override
 	public void setUpdatedAt(OffsetDateTime updatedAt) {
 		this.updatedAt = updatedAt;
 	}
-
+	
+	@Override
 	public OffsetDateTime getDeletedAt() {
 		return deletedAt;
 	}
-
+	
+	@Override
 	public void setDeletedAt(OffsetDateTime deletedAt) {
 		this.deletedAt = deletedAt;
 	}
-
+	
+	@Override
+	public boolean isActive() {
+		return this.getDeletedAt() == null;
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

@@ -53,6 +53,7 @@ public class Venda implements Serializable {
 	private List<ItemVenda> itens = new ArrayList<ItemVenda>();
 	
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	private StatusVenda status;
 
 	public Long getId() {

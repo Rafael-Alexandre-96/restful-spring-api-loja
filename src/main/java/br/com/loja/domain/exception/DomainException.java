@@ -1,4 +1,4 @@
-package br.com.loja.domain.exceptions;
+package br.com.loja.domain.exception;
 
 public class DomainException extends RuntimeException {
 	private static final long serialVersionUID = 1L;

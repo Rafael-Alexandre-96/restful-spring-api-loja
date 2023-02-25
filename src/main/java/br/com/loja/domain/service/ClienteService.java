@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.loja.domain.exceptions.EntityNotFoundException;
+import br.com.loja.domain.exception.DomainException;
+import br.com.loja.domain.exception.EntityNotFoundException;
 import br.com.loja.domain.model.Cliente;
 import br.com.loja.domain.repository.ClienteRepository;
 import jakarta.validation.Valid;
@@ -23,6 +24,10 @@ public class ClienteService {
 	
 	public List<Cliente> findAll() {
 		return clienteRepository.findAll();
+	}
+	
+	public List<Cliente> findAllActives() {
+		return clienteRepository.findAllActives();
 	}
 	
 	@Transactional
@@ -49,14 +54,22 @@ public class ClienteService {
 	@Transactional
 	public void deleteById(Long id) {
 		var finded = this.findById(id);
-		finded.setDeletedAt(OffsetDateTime.now());
-		clienteRepository.save(finded);
+		if (finded.isActive()) {
+			finded.setDeletedAt(OffsetDateTime.now());
+			clienteRepository.save(finded);
+		} else {
+			throw new DomainException(String.format("Cliente ID %s já está deletado!", id.toString()));
+		}
 	}
 	
 	@Transactional
 	public void activeById(Long id) {
 		var finded = this.findById(id);
-		finded.setDeletedAt(null);
-		clienteRepository.save(finded);
+		if (!finded.isActive()) {
+			finded.setDeletedAt(null);
+			clienteRepository.save(finded);
+		} else {
+			throw new DomainException(String.format("Cliente ID %s já está ativo!", id.toString()));
+		}
 	}
 }

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.loja.domain.converter.VendaToMovimentacaoEstoque;
-import br.com.loja.domain.exceptions.DomainException;
-import br.com.loja.domain.exceptions.EntityNotFoundException;
+import br.com.loja.domain.exception.DomainException;
+import br.com.loja.domain.exception.EntityNotFoundException;
 import br.com.loja.domain.model.Venda;
 import br.com.loja.domain.repository.ItemVendaRepository;
 import br.com.loja.domain.repository.MovimentacaoEstoqueRepository;
@@ -75,7 +75,7 @@ public class VendaService {
 			throw new DomainException("Venda não possui nenhum produto!");
 		
 		venda.getItens().forEach(item -> {
-			if (item.getQuantidade() <= 0)
+			if (item.getQuantidade() == null || item.getQuantidade() <= 0)
 				throw new DomainException("Quantidade deve ser maior que 0!");
 		});
 		

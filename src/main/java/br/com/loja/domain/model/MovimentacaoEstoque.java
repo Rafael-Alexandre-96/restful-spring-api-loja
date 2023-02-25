@@ -29,6 +29,7 @@ public class MovimentacaoEstoque implements Serializable {
 	
 	@ManyToOne
 	@JoinColumn(name = "id_produto")
+	@NotNull
 	private Produto produto;
 	
 	@NotNull
@@ -39,6 +40,7 @@ public class MovimentacaoEstoque implements Serializable {
 	private Integer quantidade;
 	
 	@Enumerated(EnumType.STRING)
+	@NotNull
 	@Column(name = "tipo_movimentacao")
 	private TipoMovimentacao tipoMovimentacao;
 	
@@ -91,6 +93,14 @@ public class MovimentacaoEstoque implements Serializable {
 	
 	public void setTipoSaida() {
 		this.tipoMovimentacao = TipoMovimentacao.SAIDA;
+	}
+	
+	public boolean isEntrada() {
+		return this.tipoMovimentacao == TipoMovimentacao.ENTRADA;
+	}
+	
+	public boolean isSaida() {
+		return this.tipoMovimentacao == TipoMovimentacao.SAIDA;
 	}
 	
 	public String getObservacao() {

@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import br.com.loja.domain.exceptions.EntityNotFoundException;
+import br.com.loja.domain.exception.EntityNotFoundException;
 import br.com.loja.domain.model.Categoria;
 import br.com.loja.domain.repository.CategoriaRepository;
 import jakarta.validation.Valid;
