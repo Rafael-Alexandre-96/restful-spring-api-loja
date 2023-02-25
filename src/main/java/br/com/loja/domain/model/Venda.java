@@ -145,6 +145,18 @@ public class Venda implements Serializable {
 	public void setStatus(StatusVenda status) {
 		this.status = status;
 	}
+	
+	public Double getValorProdutos() {
+		Double valor = 0D;
+		for(var item : this.getItens()) {
+			valor += item.getSubTotal();
+		}
+		return valor;
+	}
+	
+	public Double getValorTotal() {
+		return this.valorDesconto + this.valorFrete + this.getValorProdutos();
+	}
 
 	@Override
 	public int hashCode() {

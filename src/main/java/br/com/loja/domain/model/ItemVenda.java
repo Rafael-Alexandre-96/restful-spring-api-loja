@@ -54,6 +54,10 @@ public class ItemVenda implements Serializable {
 	public void setValorUnidade(Double valorUnidade) {
 		this.valorUnidade = valorUnidade;
 	}
+	
+	public Double getSubTotal() {
+		return this.getValorUnidade() * this.getQuantidade();
+	}
 
 	@Override
 	public int hashCode() {

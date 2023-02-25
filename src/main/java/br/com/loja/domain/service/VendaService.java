@@ -13,6 +13,7 @@ import br.com.loja.domain.model.Venda;
 import br.com.loja.domain.repository.ItemVendaRepository;
 import br.com.loja.domain.repository.MovimentacaoEstoqueRepository;
 import br.com.loja.domain.repository.VendaRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 
 @Service
@@ -29,6 +30,9 @@ public class VendaService {
 	@Autowired
 	private ProdutoService produtoService;
 	
+	@Autowired
+	private EntityManager entityManager;
+	
 	public Venda findById(Long id) {
 		return vendaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Venda ID %s não encontrada!", id.toString())));
 	}
@@ -41,9 +45,10 @@ public class VendaService {
 	public Venda generateNewVenda(@Valid Venda input) {
 		input.setNovaVenda();
 		this.checkItens(input);
-		input = vendaRepository.save(input);
+		input = vendaRepository.saveAndFlush(input);
 		this.updateAndSaveItens(input);
-		return this.findById(input.getId());
+		entityManager.refresh(input);		
+		return input;
 	}
 
 	@Transactional
