@@ -98,9 +98,9 @@ public class VendaService {
 			}
 			
 			item.setVenda(venda);
+			item = itemVendaRepository.saveAndFlush(item);
+			item.setProduto(produtoService.findById(item.getProduto().getId()));
 		});
-		
-		itemVendaRepository.saveAll(venda.getItens());
 	}
 	
 	@Transactional
