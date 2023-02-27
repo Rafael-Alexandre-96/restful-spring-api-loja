@@ -59,7 +59,7 @@ public class VendaController {
 		return VendaConverter.toOutputList(service.findAll());
 	}
 	
-	@Operation(summary = "Cadastra uma nova Venda via HTTP Body (json)")
+	@Operation(summary = "Cadastra uma nova Venda e atualiza estoque via HTTP Body (json)")
 	@ApiResponses(value = { 
 		@ApiResponse(responseCode = "201", description = "Venda criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Venda.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
@@ -72,7 +72,7 @@ public class VendaController {
 		return VendaConverter.toOutput(service.generateNewVenda(VendaConverter.toEntity(input)));
 	}
 	
-	@Operation(summary = "Finaliza uma Venda através do ID e atualiza estoque")
+	@Operation(summary = "Finaliza uma Venda através do ID")
 	@ApiResponses(value = { 
 		@ApiResponse(responseCode = "204", description = "Finalizacao confirmada", content = @Content),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido ou Venda impossivel de finalizar", content = @Content),
