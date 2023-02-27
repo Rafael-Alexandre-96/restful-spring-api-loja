@@ -10,7 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.loja.domain.exception.DomainException;
 import br.com.loja.domain.exception.EntityNotFoundException;
 import br.com.loja.domain.model.MovimentacaoEstoque;
+import br.com.loja.domain.model.ParcialEstoque;
 import br.com.loja.domain.repository.MovimentacaoEstoqueRepository;
+import br.com.loja.domain.repository.ParcialEstoqueRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 
@@ -18,6 +20,12 @@ import jakarta.validation.Valid;
 public class MovimentacaoEstoqueService {
 	@Autowired
 	private MovimentacaoEstoqueRepository movimentacaoEstoqueRepository;
+	
+	@Autowired
+	private ParcialEstoqueRepository parcialEstoqueRepository;
+	
+	@Autowired
+	private ProdutoService produtoService;
 	
 	@Autowired
 	private EntityManager entityManager;
@@ -60,6 +68,15 @@ public class MovimentacaoEstoqueService {
 	public void deleteById(Long id) {
 		var finded = this.findById(id);
 		movimentacaoEstoqueRepository.delete(finded);
+	}
+	
+	public List<ParcialEstoque> getEstoqueAtual() {
+		return parcialEstoqueRepository.findAll();
+	}
+	
+	public ParcialEstoque getEstoqueAtualByIdProduto(Long idProduto) {
+		var produto = produtoService.findById(idProduto);
+		return parcialEstoqueRepository.findByProduto(produto);
 	}
 	
 	private void checkQuantidade(MovimentacaoEstoque movimentacao) {	

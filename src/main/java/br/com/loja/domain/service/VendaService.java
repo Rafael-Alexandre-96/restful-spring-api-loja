@@ -28,6 +28,9 @@ public class VendaService {
 	private MovimentacaoEstoqueRepository estoqueRepository;
 	
 	@Autowired
+	private MovimentacaoEstoqueService estoqueService;
+	
+	@Autowired
 	private ProdutoService produtoService;
 	
 	@Autowired
@@ -47,6 +50,7 @@ public class VendaService {
 		this.checkItens(input);
 		input = vendaRepository.saveAndFlush(input);
 		this.updateAndSaveItens(input);
+		this.updateEstoque(input);
 		entityManager.refresh(input);		
 		return input;
 	}
@@ -58,20 +62,17 @@ public class VendaService {
 			finded.setFinalizada();
 		else
 			throw new DomainException(String.format("Venda ID %s so pode ser finalizada se estiver PENDENTE!", id.toString()));
-		this.updateEstoque(finded);
 		return vendaRepository.save(finded);
 	}
 	
 	@Transactional
 	public Venda cancelVenda(Long id) {
 		var finded = this.findById(id);
-		var wasFinalizada = finded.isFinalizada();
 		if (!finded.isCancelada())
 			finded.setCancelada();
 		else
 			throw new DomainException(String.format("Venda ID %s já está CANCELADA!", id.toString()));
-		if (wasFinalizada)
-			this.updateEstoque(finded);
+		this.updateEstoque(finded);
 		return vendaRepository.save(finded);
 	}
 	
@@ -82,11 +83,15 @@ public class VendaService {
 		venda.getItens().forEach(item -> {
 			if (item.getQuantidade() == null || item.getQuantidade() <= 0)
 				throw new DomainException("Quantidade deve ser maior que 0!");
-		});
-		
-		venda.getItens().forEach(item -> {
+			
 			if (item.getProduto() == null)
 				throw new DomainException("O produto não pode ser NULO!");
+			
+			var parcial = estoqueService.getEstoqueAtualByIdProduto(item.getProduto().getId());
+			
+			if (parcial.getQuantidade() <= 0 || parcial.getQuantidade() == null || (parcial.getQuantidade() - item.getQuantidade()) < 0) {
+				throw new DomainException(String.format("O produto ID %s não possui unidades suficiente em estoque: %s unidade(s)!", item.getProduto().getId().toString(), parcial.getQuantidade().toString()));
+			}
 		});
 	}
 	

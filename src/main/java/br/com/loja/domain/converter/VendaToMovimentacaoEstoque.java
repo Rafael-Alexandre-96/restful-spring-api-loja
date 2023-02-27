@@ -17,9 +17,9 @@ public class VendaToMovimentacaoEstoque {
 			movimentacao.setQuantidade(item.getQuantidade());
 			movimentacao.setDataMovimentacao(venda.getDataVenda());
 			
-			if (venda.isFinalizada()) {
+			if (venda.isPendente()) {
 				movimentacao.setTipoSaida();
-				movimentacao.setObservacao(String.format("Gerado automaticamente pela finalização da Venda ID %s!", venda.getId()));
+				movimentacao.setObservacao(String.format("Gerado automaticamente pela Venda ID %s!", venda.getId()));
 			} else if (venda.isCancelada()) {
 				movimentacao.setTipoEntrada();
 				movimentacao.setObservacao(String.format("Gerado automaticamente pelo cancelamento da Venda ID %s!", venda.getId()));

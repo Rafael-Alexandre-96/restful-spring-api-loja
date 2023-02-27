@@ -19,6 +19,7 @@ import br.com.loja.api.converter.v1.MovimentacaoEstoqueConverter;
 import br.com.loja.api.model.v1.input.MovimentacaoEstoqueInput;
 import br.com.loja.api.model.v1.output.MovimentacaoEstoqueOutput;
 import br.com.loja.domain.model.MovimentacaoEstoque;
+import br.com.loja.domain.model.ParcialEstoque;
 import br.com.loja.domain.service.MovimentacaoEstoqueService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -98,5 +99,28 @@ public class MovimentacaoEstoqueController {
 	public ResponseEntity<Void> deleteById(@Parameter(description = "ID da Movimentacao [Long]") @PathVariable("id") Long id) {
 		service.deleteById(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@Operation(summary = "Retorna lista de produtos no estoque")
+	@ApiResponses(value = { 
+		@ApiResponse(responseCode = "200", description = "Lista de Produtos", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ParcialEstoque.class))) }),
+		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
+		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
+	})
+	@GetMapping("/atual")
+	public List<ParcialEstoque> getEstoqueAtual() {
+		return service.getEstoqueAtual();
+	}
+	
+	@Operation(summary = "Retorna quantidade de um produto no estoque")
+	@ApiResponses(value = { 
+		@ApiResponse(responseCode = "200", description = "Lista de Produtos", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ParcialEstoque.class)) }),
+		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
+		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
+		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
+	})
+	@GetMapping("/atual/{idProduto}")
+	public ParcialEstoque getEstoqueAtualByIdProduto(@Parameter(description = "ID do Produto [Long]") @PathVariable("idProduto") Long idProduto) {
+		return service.getEstoqueAtualByIdProduto(idProduto);
 	}
 }
