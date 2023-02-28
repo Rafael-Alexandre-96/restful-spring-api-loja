@@ -3,13 +3,15 @@ package br.com.loja.api.model.v1.output;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import br.com.loja.api.model.v1.EnderecoInputOutput;
 
 @JsonPropertyOrder({ "id", "nome", "celular", "email", "endereco", "created_at", "updated_at", "deleted_at" })
-public class ClienteOutput implements Serializable {
+public class ClienteOutput extends RepresentationModel<ClienteOutput>implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@JsonProperty("id")

@@ -2,11 +2,13 @@ package br.com.loja.api.model.v1.output;
 
 import java.io.Serializable;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "id", "descricao" })
-public class CategoriaOutput implements Serializable {
+public class CategoriaOutput extends RepresentationModel<CategoriaOutput> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("id")

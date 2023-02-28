@@ -1,10 +1,14 @@
 package br.com.loja.api.converter.v1;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
+import br.com.loja.api.controller.MovimentacaoEstoqueController;
 import br.com.loja.api.model.v1.input.MovimentacaoEstoqueInput;
 import br.com.loja.api.model.v1.output.MovimentacaoEstoqueOutput;
 import br.com.loja.domain.model.MovimentacaoEstoque;
@@ -24,9 +28,9 @@ public class MovimentacaoEstoqueConverter {
 			mapper.map(src -> src.getId(), MovimentacaoEstoqueOutput::setKey);
 			mapper.map(src -> src.getProduto(), MovimentacaoEstoqueOutput::setProduto);
 		});
-		var outputs = mapper.map(entity, MovimentacaoEstoqueOutput.class);
-		outputs.setProduto(ProdutoConverter.toOutput(entity.getProduto()));
-		return outputs;
+		var output = mapper.map(entity, MovimentacaoEstoqueOutput.class);
+		output.setProduto(ProdutoConverter.toOutput(entity.getProduto()));
+		return addLinksHATEOAS(output);
 	}
 	
 	public static List<MovimentacaoEstoque> toEntityList(List<MovimentacaoEstoqueInput> inputs) {
@@ -43,5 +47,11 @@ public class MovimentacaoEstoqueConverter {
 			outputs.add(toOutput(entity));
 		}); 
 		return outputs;
+	}
+	
+	private static MovimentacaoEstoqueOutput addLinksHATEOAS(MovimentacaoEstoqueOutput output) {
+		output.add(linkTo(methodOn(MovimentacaoEstoqueController.class).findById(output.getKey())).withSelfRel());
+		output.add(linkTo(methodOn(MovimentacaoEstoqueController.class).getEstoqueAtual()).withRel("atual-estoque"));
+		return output;
 	}
 }

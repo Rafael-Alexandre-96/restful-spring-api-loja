@@ -5,11 +5,13 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonPropertyOrder({ "id", "nome", "valor", "categorias", "created_at", "updated_at", "deleted_at" })
-public class ProdutoOutput implements Serializable {
+public class ProdutoOutput extends RepresentationModel<ProdutoOutput> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("id")

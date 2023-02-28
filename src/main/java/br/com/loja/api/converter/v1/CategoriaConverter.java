@@ -1,10 +1,14 @@
 package br.com.loja.api.converter.v1;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
+import br.com.loja.api.controller.CategoriaController;
 import br.com.loja.api.model.v1.input.CategoriaInput;
 import br.com.loja.api.model.v1.output.CategoriaOutput;
 import br.com.loja.domain.model.Categoria;
@@ -20,7 +24,8 @@ public class CategoriaConverter {
 		mapper.typeMap(Categoria.class, CategoriaOutput.class).addMappings(mapper -> {
 			mapper.map(src -> src.getId(), CategoriaOutput::setKey);
 		});
-		return mapper.map(entity, CategoriaOutput.class);
+		var output = mapper.map(entity, CategoriaOutput.class);
+		return addLinksHATEOAS(output);
 	}
 	
 	public static List<Categoria> toEntityList(List<CategoriaInput> inputs) {
@@ -37,5 +42,10 @@ public class CategoriaConverter {
 			outputs.add(toOutput(entity));
 		}); 
 		return outputs;
+	}
+	
+	private static CategoriaOutput addLinksHATEOAS(CategoriaOutput output) {
+		output.add(linkTo(methodOn(CategoriaController.class).findById(output.getKey())).withSelfRel());
+		return output;
 	}
 }

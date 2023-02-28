@@ -3,6 +3,8 @@ package br.com.loja.api.model.v1.output;
 import java.io.Serializable;
 import java.time.OffsetDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -11,7 +13,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @JsonPropertyOrder({ "id", "produto", "data_movimentacao", "quantidade", "tipo_movimentacao", "observacao" })
-public class MovimentacaoEstoqueOutput implements Serializable {
+public class MovimentacaoEstoqueOutput extends RepresentationModel<MovimentacaoEstoqueOutput> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("id")

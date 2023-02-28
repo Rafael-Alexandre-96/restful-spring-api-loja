@@ -1,10 +1,14 @@
 package br.com.loja.api.converter.v1;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 
+import br.com.loja.api.controller.ClienteController;
 import br.com.loja.api.model.v1.input.ClienteInput;
 import br.com.loja.api.model.v1.output.ClienteOutput;
 import br.com.loja.domain.model.Cliente;
@@ -24,8 +28,8 @@ public class ClienteConverter {
 			mapper.map(src -> src.getId(), ClienteOutput::setKey);
 			mapper.map(src -> src.getEndereco(), ClienteOutput::setEndereco);
 		});
-		var outputs = mapper.map(entity, ClienteOutput.class);
-		return outputs;
+		var output = mapper.map(entity, ClienteOutput.class);
+		return addLinksHATEOAS(output);
 	}
 	
 	public static List<Cliente> toEntityList(List<ClienteInput> inputs) {
@@ -42,5 +46,11 @@ public class ClienteConverter {
 			outputs.add(toOutput(entity));
 		}); 
 		return outputs;
+	}
+	
+	private static ClienteOutput addLinksHATEOAS(ClienteOutput output) {
+		output.add(linkTo(methodOn(ClienteController.class).findById(output.getKey())).withSelfRel());
+		output.add(linkTo(methodOn(ClienteController.class).activeById(output.getKey())).withRel("active-record"));
+		return output;
 	}
 }

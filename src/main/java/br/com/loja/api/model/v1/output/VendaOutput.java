@@ -5,6 +5,8 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -13,7 +15,7 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 
 @JsonPropertyOrder({ "id", "cliente", "status", "data_venda", "data_pagamento", "valor_produtos", "valor_desconto", "valor_frete", "valor_total", "itens" })
-public class VendaOutput implements Serializable {
+public class VendaOutput extends RepresentationModel<VendaOutput> implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@JsonProperty("id")
