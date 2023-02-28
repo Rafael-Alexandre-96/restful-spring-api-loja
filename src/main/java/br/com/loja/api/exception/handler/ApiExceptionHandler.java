@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import br.com.loja.api.exception.InvalidJwtAuthenticationException;
 import br.com.loja.domain.exception.DomainException;
 import br.com.loja.domain.exception.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -24,6 +25,13 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(RuntimeException.class)
 	public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 		HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
+		ExceptionResponse response = new ExceptionResponse(status, OffsetDateTime.now(), ex.getMessage(), request.getDescription(false));
+		return handleExceptionInternal(ex, response, new HttpHeaders(), status, request);
+	}
+	
+	@ExceptionHandler(InvalidJwtAuthenticationException.class)
+	public ResponseEntity<Object> InvalidJwtAuthenticationHandler(Exception ex, WebRequest request) {
+		HttpStatus status = HttpStatus.FORBIDDEN;
 		ExceptionResponse response = new ExceptionResponse(status, OffsetDateTime.now(), ex.getMessage(), request.getDescription(false));
 		return handleExceptionInternal(ex, response, new HttpHeaders(), status, request);
 	}
