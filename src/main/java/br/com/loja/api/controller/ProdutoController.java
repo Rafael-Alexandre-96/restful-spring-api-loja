@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loja.api.converter.v1.ProdutoConverter;
 import br.com.loja.api.model.v1.input.ProdutoInput;
 import br.com.loja.api.model.v1.output.ProdutoOutput;
-import br.com.loja.domain.model.Produto;
 import br.com.loja.domain.service.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Retorna um Produto através do ID")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Produto encontrado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)) }),
+		@ApiResponse(responseCode = "200", description = "Produto encontrado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProdutoOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
@@ -53,7 +52,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Retorna lista de todos Produtos")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Lista de Produtos", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Produto.class))) }),
+		@ApiResponse(responseCode = "200", description = "Lista de Produtos", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ProdutoOutput.class))) }),
 		@ApiResponse(responseCode = "400", description = "Query Param inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -68,7 +67,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Cadastra um novo Produto via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "201", description = "Produto criado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)) }),
+		@ApiResponse(responseCode = "201", description = "Produto criado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProdutoOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -81,7 +80,7 @@ public class ProdutoController {
 	
 	@Operation(summary = "Atualiza um Produto existente via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Produto atualizado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Produto.class)) }),
+		@ApiResponse(responseCode = "200", description = "Produto atualizado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ProdutoOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content),
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),

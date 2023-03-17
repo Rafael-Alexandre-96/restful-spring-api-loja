@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loja.api.converter.v1.VendaConverter;
 import br.com.loja.api.model.v1.input.VendaInput;
 import br.com.loja.api.model.v1.output.VendaOutput;
-import br.com.loja.domain.model.Venda;
 import br.com.loja.domain.service.VendaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -37,7 +36,7 @@ public class VendaController {
 	
 	@Operation(summary = "Retorna uma Venda através do ID")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Venda encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Venda.class)) }),
+		@ApiResponse(responseCode = "200", description = "Venda encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = VendaOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
@@ -50,7 +49,7 @@ public class VendaController {
 	
 	@Operation(summary = "Retorna lista de todas Vendas")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Lista de Vendas", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Venda.class))) }),
+		@ApiResponse(responseCode = "200", description = "Lista de Vendas", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = VendaOutput.class))) }),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
 	})
@@ -61,7 +60,7 @@ public class VendaController {
 	
 	@Operation(summary = "Cadastra uma nova Venda e atualiza estoque via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "201", description = "Venda criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Venda.class)) }),
+		@ApiResponse(responseCode = "201", description = "Venda criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = VendaOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loja.api.converter.v1.MovimentacaoEstoqueConverter;
 import br.com.loja.api.model.v1.input.MovimentacaoEstoqueInput;
 import br.com.loja.api.model.v1.output.MovimentacaoEstoqueOutput;
-import br.com.loja.domain.model.MovimentacaoEstoque;
 import br.com.loja.domain.model.ParcialEstoque;
 import br.com.loja.domain.service.MovimentacaoEstoqueService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -39,7 +38,7 @@ public class MovimentacaoEstoqueController {
 	
 	@Operation(summary = "Retorna uma Movimentacao através do ID")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Movimentacao encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoque.class)) }),
+		@ApiResponse(responseCode = "200", description = "Movimentacao encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoqueOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
@@ -52,7 +51,7 @@ public class MovimentacaoEstoqueController {
 	
 	@Operation(summary = "Retorna lista de todas Movimentacoes")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Lista de Movimentacoes", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MovimentacaoEstoque.class))) }),
+		@ApiResponse(responseCode = "200", description = "Lista de Movimentacoes", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = MovimentacaoEstoqueOutput.class))) }),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
 	})
@@ -63,7 +62,7 @@ public class MovimentacaoEstoqueController {
 	
 	@Operation(summary = "Cadastra uma nova Movimentacao via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "201", description = "Movimentacao criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoque.class)) }),
+		@ApiResponse(responseCode = "201", description = "Movimentacao criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoqueOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -76,7 +75,7 @@ public class MovimentacaoEstoqueController {
 	
 	@Operation(summary = "Atualiza uma Movimentacao existente via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Movimentacao atualizada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoque.class)) }),
+		@ApiResponse(responseCode = "200", description = "Movimentacao atualizada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = MovimentacaoEstoqueOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content),
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loja.api.converter.v1.ClienteConverter;
 import br.com.loja.api.model.v1.input.ClienteInput;
 import br.com.loja.api.model.v1.output.ClienteOutput;
-import br.com.loja.domain.model.Cliente;
 import br.com.loja.domain.service.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -40,7 +39,7 @@ public class ClienteController {
 	
 	@Operation(summary = "Retorna um Cliente através do ID")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Cliente encontrado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class)) }),
+		@ApiResponse(responseCode = "200", description = "Cliente encontrado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
@@ -53,7 +52,7 @@ public class ClienteController {
 	
 	@Operation(summary = "Retorna lista de todos Clientes")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Lista de Clientes", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Cliente.class))) }),
+		@ApiResponse(responseCode = "200", description = "Lista de Clientes", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = ClienteOutput.class))) }),
 		@ApiResponse(responseCode = "400", description = "Query Param inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -68,7 +67,7 @@ public class ClienteController {
 	
 	@Operation(summary = "Cadastra um novo Cliente via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "201", description = "Cliente criado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class)) }),
+		@ApiResponse(responseCode = "201", description = "Cliente criado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -81,7 +80,7 @@ public class ClienteController {
 	
 	@Operation(summary = "Atualiza um Cliente existente via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Cliente atualizado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Cliente.class)) }),
+		@ApiResponse(responseCode = "200", description = "Cliente atualizado", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = ClienteOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content),
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),

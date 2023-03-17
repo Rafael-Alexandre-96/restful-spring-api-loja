@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.loja.api.converter.v1.CategoriaConverter;
 import br.com.loja.api.model.v1.input.CategoriaInput;
 import br.com.loja.api.model.v1.output.CategoriaOutput;
-import br.com.loja.domain.model.Categoria;
 import br.com.loja.domain.service.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -38,7 +37,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Retorna uma Categoria através do ID")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Categoria encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class)) }),
+		@ApiResponse(responseCode = "200", description = "Categoria encontrada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CategoriaOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Paramentro ID inválido", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
@@ -51,7 +50,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Retorna lista de todas Categorias")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Lista de Categorias", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Categoria.class))) }),
+		@ApiResponse(responseCode = "200", description = "Lista de Categorias", content = { @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = CategoriaOutput.class))) }),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
 	})
@@ -62,7 +61,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Cadastra uma nova Categoria via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "201", description = "Categoria criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class)) }),
+		@ApiResponse(responseCode = "201", description = "Categoria criada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CategoriaOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content), 
 		@ApiResponse(responseCode = "500", description = "Erro no servidor", content = @Content)
@@ -75,7 +74,7 @@ public class CategoriaController {
 	
 	@Operation(summary = "Atualiza uma Categoria existente via HTTP Body (json)")
 	@ApiResponses(value = { 
-		@ApiResponse(responseCode = "200", description = "Categoria atualizada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = Categoria.class)) }),
+		@ApiResponse(responseCode = "200", description = "Categoria atualizada", content = { @Content(mediaType = "application/json", schema = @Schema(implementation = CategoriaOutput.class)) }),
 		@ApiResponse(responseCode = "400", description = "Input com dados inválidos", content = @Content),
 		@ApiResponse(responseCode = "403", description = "Não autorizado", content = @Content),
 		@ApiResponse(responseCode = "404", description = "Não encontrado", content = @Content),
